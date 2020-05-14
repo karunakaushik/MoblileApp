@@ -5,7 +5,7 @@ import AboutUs from './aboutcomponent';
 import ContactUs from './contactcomponent'
 import { View, Platform} from 'react-native';
 import DishDetail from './dishDetailscomponent'
-import { createStackNavigator, createDrawerNavigator } from 'react-navigation-stack'
+import { createStackNavigator, createDrawerNavigator } from '@react-navigation/stack'
 
 const MenuNavigator = createStackNavigator({
     Menu: { screen: Menu },
@@ -105,11 +105,6 @@ const MainNavigator = createDrawerNavigator({
 
 
 export default class Main extends Component{
-
-
-    // OnDishSelect(dishId){
-    //     this.setState({selectedDish: dishId})
-    // }
     render() {
         return(
             <View style={{flex:1, paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight }}>

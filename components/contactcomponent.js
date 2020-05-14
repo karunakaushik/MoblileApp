@@ -5,6 +5,10 @@ import { Card } from 'react-native-elements';
 
 
 export default class ContactUs extends Component {
+
+    static navigationOptions = {        
+        title: 'ContactUs'    
+    };
     render(){
         return(
 
@@ -19,7 +23,7 @@ Fax: +852 8765 4321
 Email:confusion@food.net`}
                    </Text>
                </Card>
-           {/* </View> */}
+           
            </ScrollView>
         )
     }

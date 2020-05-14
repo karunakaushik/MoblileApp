@@ -14,9 +14,6 @@ function RenderDish(props) {
                 <Text style={{margin: 10, fontSize:20}}> 
                     {dish.category} ({dish.name} )
                 </Text>
-                {/* <Text style={{margin: 10}}>                       
-                    {dish.label}   ({dish.price})                 
-                </Text>  */}
                 <Text style={{margin: 10}}>                       
                     {dish.description}                    
                 </Text>             
