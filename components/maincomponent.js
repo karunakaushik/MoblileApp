@@ -5,9 +5,26 @@ import AboutUs from './aboutcomponent';
 import ContactUs from './contactcomponent'
 import { View, Platform, Text, ScrollView, Image, StyleSheet} from 'react-native';
 import DishDetail from './dishDetailscomponent'
+import Reservation from './Reservation'
+import Favorite from './Favoritecomponent'
 import { createStackNavigator, createDrawerNavigator, DrawerItems, SafeAreaView } from '@react-navigation/stack'
 import {Icon } from 'react-native-elements'
-// import { setConfigurationAsync } from 'expo/build/AR';
+import { fetchComments,fetchDishes, fetchPromos, fetchLeaders } from '../redux/ActionCreators'
+import { connect } from 'react-redux'
+import {baseUrl} from '../shared/baseUrl'
+
+const mapStateToProps = state => {
+  return {
+
+  }
+}
+
+const mapDispatchToProps = dispatch => ({  
+    fetchDishes: () => dispatch(fetchDishes()),  
+    fetchComments: () => dispatch(fetchComments()),  
+    fetchPromos: () => dispatch(fetchPromos()),  
+    fetchLeaders: () => dispatch(fetchLeaders()), 
+})
 
 
 const MenuNavigator = createStackNavigator({
@@ -104,6 +121,41 @@ const ContactUsNavigator = createStackNavigator({
 }
 );
 
+const ReservationNavigator = createStackNavigator({    
+    Reservation: { screen: Reservation }  
+}, {    
+    navigationOptions: ({ navigation }) => ({      
+        headerStyle: {          
+            backgroundColor: "#512DA8"      
+        },      
+        headerTitleStyle: {          
+            color: "#fff"                  
+        },      
+        headerTintColor: "#fff",
+        headerLeft: <Icon name="menu" size={24}        
+           iconStyle={{ color: 'white' }}         
+           onPress={ () => navigation.navigate('DrawerToggle') } />       
+    }) 
+}
+);
+const FavoriteNavigator = createStackNavigator({    
+    Favorite: { screen: Favorite }  
+}, {    
+    navigationOptions: ({ navigation }) => ({      
+        headerStyle: {          
+            backgroundColor: "#512DA8"      
+        },      
+        headerTitleStyle: {          
+            color: "#fff"                  
+        },      
+        headerTintColor: "#fff",
+        headerLeft: <Icon name="menu" size={24}        
+           iconStyle={{ color: 'white' }}         
+           onPress={ () => navigation.navigate('DrawerToggle') } />       
+    }) 
+}
+);
+
 const MainNavigator = createDrawerNavigator({    
     Home:       
     { screen: HomeNavigator,        
@@ -168,6 +220,38 @@ const MainNavigator = createDrawerNavigator({
                 
                 ),        
         }      
+    },
+    Favorite:       
+    { screen: FavoriteNavigator,        
+        navigationOptions: {          
+            title: 'Favorite',          
+            drawerLabel: 'Favorite',
+            drawerIcon: ({ tintColor, focused }) => (
+                <Icon              
+                   name='heart'              
+                   type='font-awesome'
+                   size={24}              
+                   color={tintColor}            
+                />          
+                
+                ),        
+        }      
+    },
+    Reservation:       
+    { screen: ReservationNavigator,        
+        navigationOptions: {          
+            title: 'Reserve Table',          
+            drawerLabel: 'Reserve Table',
+            drawerIcon: ({ tintColor, focused }) => (
+                <Icon              
+                   name='cutlery'              
+                   type='font-awesome'
+                   size={24}              
+                   color={tintColor}            
+                />          
+                
+                ),        
+        }      
     }
 }, 
 {  
@@ -177,7 +261,16 @@ const MainNavigator = createDrawerNavigator({
 );
 
 
-export default class Main extends Component{
+class Main extends Component{
+
+    componentDidMount() {    
+        this.props.fetchDishes();    
+        this.props.fetchComments();    
+        this.props.fetchPromos();    
+        this.props.fetchLeaders();  
+    }
+    
+    
     render() {
         return(
             <View style={{flex:1, paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight }}>
@@ -211,3 +304,4 @@ const styles = StyleSheet.create({
         height: 60  
     } 
 });
+export default connect(mapStateToProps, mapDispatchToProps) (Main);

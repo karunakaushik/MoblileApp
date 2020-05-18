@@ -1,22 +1,25 @@
-import React from 'react';
+import React, { Component } from 'react';
 import AboutUs from './components/aboutcomponent';
 import ContactUs from './components/contactcomponent';
 // import Main from './components/maincomponent';
-// import { StyleSheet, Text, View } from 'react-native';
+import { Provider } from 'react-redux'
+import { ConfigureStore } from './redux/ConfigureStore'
+import Home from './components/homecomponent';
+import Reservation from './components/Reservation';
+import Practice from './components/practice';
 
-export default function App() {
+
+const store = ConfigureStore();
+
+export default class App extends Component {
+  render() {
   return (
-    // <Main />
+  <Provider store={store}>
     <AboutUs />
-    // <ContactUs />
+    {/* <Main /> */}
+    {/* <Reservation /> */}
+    {/* <Practice /> */}
+  </Provider>
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
+}

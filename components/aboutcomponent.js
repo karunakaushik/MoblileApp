@@ -2,7 +2,17 @@ import React, { Component } from 'react';
 import { ScrollView, Text, FlatList } from 'react-native';
 import { ListItem } from 'react-native-elements'
 import { Card } from 'react-native-elements';
-import { LEADERS } from '../shared/leaders';
+import { connect } from 'react-redux'
+import { baseUrl } from '../shared/baseUrl'
+import { Loading } from './Loadingcomponent';
+import * as Animatable from 'react-native-animatable';
+
+
+const mapStateToProps = state => {
+  return {
+    leaders: state.leaders
+  }
+}
 
 
 
@@ -16,18 +26,13 @@ function History() {
       </Card>
     );
   }
-export default class AboutUs extends Component {
-    constructor(props){
-        super(props)
-        this.state = {
+class AboutUs extends Component {
 
-            leaders : LEADERS
-
-        }
-    }
     static navigationOptions = {        
         title: 'AboutUs'    
     };
+
+
     render() {
    
     const renderleaders = ({item, index}) => {
@@ -39,22 +44,55 @@ export default class AboutUs extends Component {
                 subtitle = {item.description}
                 subtitleStyle={{ color: '#6c757d' }} // #6c757d taken from Bootstrap blockquote-footer CSS
                 hideChevron = {true}
-                leftAvatar = {{ source : require('./images/alberto.png')}}
+                leftAvatar = {{ source :{uri: baseUrl + item.image }}}
             />
         );
 
-    };    
-    return(
-            <ScrollView>
+    }; 
+    
+    if (this.props.leaders.isLoading){
+      return(
+        <ScrollView>
+          <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+          <History />
+          <Card title= " Corporate Leadership">
+            <Loading />
+          </Card>
+          </Animatable.View>
+        </ScrollView>
+      )
+    }
+    else if (this.props.leaders.errmess) {
+      return(
+        <ScrollView>
+          <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+          <History />
+          <Card title= " Corporate Leadership">
+            <Text>{this.props.leaders.errmess}</Text>
+          </Card>
+          </Animatable.View>
+        </ScrollView>
+
+      );
+    }
+    else{
+      return(
+        <ScrollView>
+          <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
             <History />            
             <Card title=" Corporate Leadership" >
-                <FlatList 
-                  data={this.state.leaders}
-                  renderItem = {renderleaders}
-                  keyExtractor = {item => item.id.toString()}
-                />
+              <FlatList 
+                data={this.props.leaders.leaders}
+                renderItem = {renderleaders}
+                keyExtractor = {item => item.id.toString()}
+              />
             </Card>
-           </ScrollView>
-        )
+           </Animatable.View>
+        </ScrollView>
+    );
+
+    }
+    
     }
 }
+export default connect(mapStateToProps)(AboutUs);
