@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add expo-vector
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add expo-secure-store@~8.1.0
 
 PATH: 
   C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\ProgramData\chocolatey\bin;C:\Program Files\nodejs\;C:\Program Files\MongoDB\Server\4.2\bin;C:\Program Files (x86)\Yarn\bin\;C:\Users\user\PyMOL;C:\Users\user\PyMOL\Library\mingw-w64\bin;C:\Users\user\PyMOL\Library\usr\bin;C:\Users\user\PyMOL\Library\bin;C:\Users\user\PyMOL\Scripts;C:\Users\user\AppData\Local\Microsoft\WindowsApps;C:\Users\user\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\JetBrains\PyCharm Community Edition 2019.2.2\bin;;C:\Users\user\AppData\Roaming\npm;C:\Users\user\AppData\Local\Yarn\bin
@@ -14,17 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/expo-vector: Not found
-      at Request.params.callback [as _callback] (C:\Program Files (x86)\Yarn\lib\cli.js:66096:18)
-      at Request.self.callback (C:\Program Files (x86)\Yarn\lib\cli.js:140748:22)
-      at Request.emit (events.js:310:20)
-      at Request.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:141720:10)
-      at Request.emit (events.js:310:20)
-      at IncomingMessage.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:141642:12)
-      at Object.onceWrapper (events.js:416:28)
-      at IncomingMessage.emit (events.js:322:22)
-      at endReadableNT (_stream_readable.js:1187:12)
-      at processTicksAndRejections (internal/process/task_queues.js:84:21)
+  Error: EPERM: operation not permitted, unlink 'C:\Users\user\Desktop\confusion\node_modules\@babel\generator\node_modules\.bin'
 
 npm manifest: 
   {
@@ -37,24 +27,41 @@ npm manifest:
       "eject": "expo eject"
     },
     "dependencies": {
-      "@react-navigation/stack": "^5.3.2",
+      "@react-native-community/datetimepicker": "github:react-native-community/datetimepicker",
+      "@react-navigation/native": "^5.3.0",
+      "@react-navigation/stack": "^5.3.5",
       "@unimodules/react-native-adapter": "^5.2.0",
       "expo": "~37.0.3",
-      "expo-asset": "~8.1.4",
+      "expo-asset": "^8.1.4",
+      "expo-file-system": "^8.1.0",
       "expo-font": "~8.1.0",
       "native-base": "2.13.12",
       "react": "~16.9.0",
       "react-dom": "~16.9.0",
       "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.1.tar.gz",
+      "react-native-animatable": "^1.2.4",
+      "react-native-datepicker": "^1.7.2",
       "react-native-elements": "^1.2.7",
-      "react-native-gesture-handler": "^1.6.1",
-      "react-native-safe-area-context": "^1.0.0",
-      "react-native-screens": "^2.7.0",
+      "react-native-fontawesome": "^7.0.0",
+      "react-native-gesture-handler": "~1.6.0",
+      "react-native-modal-datetime-picker": "^8.6.0",
+      "react-native-reanimated": "~1.7.0",
+      "react-native-safe-area-context": "^0.7.3",
+      "react-native-screens": "^2.2.0",
+      "react-native-swipeout": "^2.3.3",
+      "react-native-ui-xg": "0.0.6",
       "react-native-web": "~0.11.7",
-      "react-navigation": "^4.3.9"
+      "react-navigation": "^4.3.9",
+      "react-navigation-stack": "^2.4.0",
+      "react-redux": "^5.0.7",
+      "redux": "^4.0.0",
+      "redux-logger": "^3.0.6",
+      "redux-persist": "^5.9.1",
+      "redux-thunk": "^2.2.0"
     },
     "devDependencies": {
       "@babel/core": "^7.8.6",
+      "@babel/plugin-syntax-flow": "^7.8.3",
       "babel-preset-expo": "~8.1.0"
     },
     "private": true
@@ -2425,7 +2432,7 @@ Lockfile:
       snapdragon "^0.8.1"
       to-regex "^3.0.1"
   
-  expo-asset@~8.1.4:
+  expo-asset@^8.1.4, expo-asset@~8.1.4:
     version "8.1.4"
     resolved "https://registry.yarnpkg.com/expo-asset/-/expo-asset-8.1.4.tgz#5265c28c1c279b2f9779269195bec4caf250ba5d"
     integrity sha512-6YqW22F5issD1rgqBCja8TCA2dr+yf/89FdYs/jhQYpw5OJAnAvfpK3GL8h3jRCu1TvxZqhH5NeLG6f2b3oUqg==
@@ -4592,7 +4599,7 @@ Lockfile:
       react-native-ratings "^6.3.0"
       react-native-status-bar-height "^2.2.0"
   
-  react-native-gesture-handler@^1.6.1:
+  react-native-gesture-handler@~1.6.0:
     version "1.6.1"
     resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.6.1.tgz#678e2dce250ed66e93af409759be22cd6375dd17"
     integrity sha512-gQgIKhDiYf754yzhhliagLuLupvGb6ZyBdzYzr7aus3Fyi87TLOw63ers+r4kGw0h26oAWTAdHd34JnF4NeL6Q==
@@ -4623,10 +4630,17 @@ Lockfile:
       lodash "^4.17.4"
       prop-types "^15.5.10"
   
-  react-native-safe-area-context@^1.0.0:
-    version "1.0.0"
-    resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-1.0.0.tgz#8b4d79b06d6a9ed5ff3b2c3f0ba25d85538a3149"
-    integrity sha512-8Poo0FHSS/KE0fP6JUH9Mnjg2KQ5MfZAJN3G8/gW2HoFSypWSfFmDp5msETU0Ix3OnRsmBZTJpmgHFEl9OfNAg==
+  react-native-reanimated@~1.7.0:
+    version "1.7.1"
+    resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.7.1.tgz#6363c7f3ebbabc56a05d5dccaf09d95f3b6a2d69"
+    integrity sha512-aBwhoQdH4shkeTPbi7vKcAwYOzBp/6zElEKuIOgby11TceoM7y5SgNImC3HbDWWld3QV2PA2AgQGwAy51WgF3Q==
+    dependencies:
+      fbjs "^1.0.0"
+  
+  react-native-safe-area-context@^0.7.3:
+    version "0.7.3"
+    resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-0.7.3.tgz#ad6bd4abbabe195332c53810e4ce5851eb21aa2a"
+    integrity sha512-9Uqu1vlXPi+2cKW/CW6OnHxA76mWC4kF3wvlqzq4DY8hn37AeiXtLFs2WkxH4yXQRrnJdP6ivc65Lz+MqwRZAA==
   
   react-native-safe-area-view@^0.14.9:
     version "0.14.9"
@@ -4635,7 +4649,7 @@ Lockfile:
     dependencies:
       hoist-non-react-statics "^2.3.1"
   
-  react-native-screens@^2.7.0:
+  react-native-screens@^2.2.0:
     version "2.7.0"
     resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.7.0.tgz#2d3cf3c39a665e9ca1c774264fccdb90e7944047"
     integrity sha512-n/23IBOkrTKCfuUd6tFeRkn3lB2QZ3cmvoubRscR0JU/Zl4/ZyKmwnFmUv1/Fr+2GH/H8UTX59kEKDYYg3dMgA==
@@ -4708,6 +4722,14 @@ Lockfile:
       scheduler "0.15.0"
       stacktrace-parser "^0.1.3"
       whatwg-fetch "^3.0.0"
+  
+  react-navigation-stack@^2.4.0:
+    version "2.4.0"
+    resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-2.4.0.tgz#34efbbaf64f6fe2a77b74bf85a1f784cc8033b40"
+    integrity sha512-Ilo5aAXyh0uTs19HskOuD3NSxdhcUD3ZVjKalYw3egifzzGqs36NL1L7lrB+4ZZpiUwpMDJrYvUQROI64cvY5A==
+    dependencies:
+      color "^3.1.2"
+      react-native-iphone-x-helper "^1.2.1"
   
   react-navigation@^4.3.9:
     version "4.3.9"

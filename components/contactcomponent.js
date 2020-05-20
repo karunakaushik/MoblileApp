@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { ScrollView, Text } from 'react-native';
-import { Card } from 'react-native-elements'; 
+import { Card,  Button, Icon } from 'react-native-elements'; 
 import * as Animatable from 'react-native-animatable';
-
+import { MailComposer } from 'expo';
 
 
 export default class ContactUs extends Component {
@@ -10,6 +10,15 @@ export default class ContactUs extends Component {
     static navigationOptions = {        
         title: 'ContactUs'    
     };
+
+    sendMail() {        
+        MailComposer.composeAsync({            
+            recipients: ['confusion@food.net'],            
+            subject: 'Enquiry',            
+            body: 'To whom it may concern:'        
+        })    
+    }
+
     render(){
         return(
 
@@ -25,6 +34,13 @@ Fax: +852 8765 4321
 Email:confusion@food.net`}
                    </Text>
                </Card>
+                <Button                        
+                    title="Send Email" 
+                    buttonStyle={{backgroundColor: "#512DA8"}}
+                    icon={<Icon name='envelope-o' type='font-awesome' color='white' />}
+                    onPress={this.sendMail}                        
+                    
+                /> 
                </Animatable.View>
            </ScrollView>
         )

@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
-import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal } from 'react-native'; 
+import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal, Alert } from 'react-native'; 
 import { Card } from 'react-native-elements'
 import DatePicker from 'react-native-datepicker'
-// import DateTimePickerModal from 'react-native-modal-datetime-picker'
-
+import * as Animatable from 'react-native-animatable';
+import { Permissions, Notifications } from 'expo';
 
 
 class Reservation extends Component {
@@ -21,12 +21,95 @@ class Reservation extends Component {
         title : 'Reserve Table'
     }
 
+
+    async obtainNotificationPermission() {
+        let permission = await Permissions.getAsync(Permissions.USER_FACING_NOTIFICATIONS);
+        if (permission.status !== 'granted') {
+          permission = await Permissions.askAsync(Permissions.USER_FACING_NOTIFICATIONS);
+          if (permission.status !== 'granted') {
+            Alert.alert('Permission not granted to show notifications');
+          }
+        }
+        return permission;
+    }
+
+    async obtainCalendarPermission() {
+        let permission = await Permissions.getAsync(Permissions.CALENDAR);
+        if (permission.status !== 'granted'){
+            permission = await Permissions.askAsync(Permissions.CALENDAR);
+            if (permission.status !== 'granted') {
+                Alert.alert(
+                    'Permission not granted to access the calendar'
+                );
+            }
+        }
+        return permission;
+        
+    }
+
+    async presentLocalNotification(date) {
+        await Reservation.obtainNotificationPermission();
+        Notifications.presentLocalNotificationAsync({
+          title: 'Your Reservation',
+          body: `Reservation for ${date} requested`,
+          ios: {
+            sound: true,
+          },
+          android: {
+            sound: true,
+            vibrate: true,
+            color: '#512DA8',
+          },
+        });
+    }
+
+    async addReservationToCalendar(date) {
+        await Reservation.obtainCalendarPermission();
+        const startDate = new Date(Date.parse(date));
+        const endDate = new Date(Date.parse(date) + (2 * 60 * 60 * 1000));
+        Calendar.createEventAsync(
+            Calendar.DEFAULT,
+            {
+              title: 'Con Fusion Table Reservation',
+              location: '121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong',
+              startDate,
+              endDate,
+              timeZone: 'Asia/Hong_Kong',
+                
+            },
+        );
+        Alert.alert('Reservation has been added to your calendar') 
+    }
+
     toggleModal(){
         this.setState({showModal: !this.state.showModal});
     }
+    confirmReservation(date) {
+        this.presentLocalNotification(this.state.date)
+        this.resetForm();
+      }
     handleReservation() {
-        console.log(JSON.stringify(this.state));
-        this.toggleModal();
+    //   const { date, guests, smoking } = this.state;
+       
+        Alert.alert(
+            'Your Registration OK?',
+        // `Number of guests: ${guests}\nSmoking? ${smoking ? 'Yes' : 'No'}\nDate and Time:${date}`,
+            'Number of guests:'+ this.state.guests,
+            'Smoking?' + this.state.smoking ? 'Yes' : 'No',
+            'Date and Time '+ this.state.date,
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => this.resetForm(),
+                    style: 'cancel'
+                },
+                {
+                    text: 'OK',
+                    onPress: () => this.confirmReservation(date),
+                },
+            ],
+            {cancelable : false},
+        );
     }
 
     resetForm(){
@@ -41,9 +124,11 @@ class Reservation extends Component {
 
     
     render() {
+      const todayDate = new Date().toISOString().split('T')[0];
         
         return(
               <ScrollView>
+          <Animatable.View animation="zoomIn">
                   <Card title = "Reservation Form">
                   <View style={styles.formRow}>
                       <Text style={styles.formLable}>
@@ -79,7 +164,7 @@ class Reservation extends Component {
                        format=''                    
                        mode="datetime"                    
                        placeholder="select date and Time"                    
-                       minDate="2020-16-05"                    
+                       minDate={todayDate}                   
                        confirmBtnText="Confirm"                    
                        cancelBtnText="Cancel"                    
                        customStyles={{                    
@@ -97,15 +182,16 @@ class Reservation extends Component {
                 </View>                
                 <View style={styles.formRow}>                
                 <Button                    
-                    onPress={() => this.handleReservation()}                    
                     title="Reserve"                    
                     color="#512DA8"                    
-                    accessibilityLabel="Learn more about this purple button"                    
+                    accessibilityLabel="Learn more about this purple button"
+                    onPress={() => this.handleReservation()}                    
+
                 />                
                 </View>
                 </Card>
-
-                <Modal animationType = {"slide"} transparent = {false}                    
+                </Animatable.View>
+                {/* <Modal animationType = {"slide"} transparent = {false}                    
                    visible = {this.state.showModal}                    
                    onDismiss = {() => this.toggleModal() }                    
                    onRequestClose = {() => this.toggleModal() }>                    
@@ -119,7 +205,7 @@ class Reservation extends Component {
                             title="Close"                            
                     />                   
                     </View>                
-                </Modal> 
+                </Modal>  */}
               </ScrollView>
         );
     }
@@ -140,22 +226,6 @@ const styles = StyleSheet.create({
     formItem: {        
         flex: 1    
     },
-    modal: {       
-        justifyContent: 'center',       
-        margin: 20    
-    },    
-    modalTitle: {        
-        fontSize: 24,        
-        fontWeight: 'bold',        
-        backgroundColor: '#512DA8',        
-        textAlign: 'center',        
-        color: 'white',        
-        marginBottom: 20    
-    },    
-    modalText: {        
-        fontSize: 18,        
-        margin: 10    
-    } 
 });
 
 export default Reservation;

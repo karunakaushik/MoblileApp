@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, ScrollView, Button, Modal, FlatList,StyleSheet } from 'react-native'
+import { Text, View, ScrollView, Button, Modal, FlatList,StyleSheet,Alert, PanResponder, Share } from 'react-native'
 import { Card, Input, Rating, Icon } from 'react-native-elements'
 import { connect } from 'react-redux'
 import { baseUrl } from '../shared/baseUrl'
@@ -50,19 +50,91 @@ function RenderComment(props) {
 
 function RenderDish(props) {
     const dish = props.dish;
+
+    handleViewRef = ref => this.view = ref;
+
+    const recognizeDrag = ({ moveX, moveY, dx, dy }) => {
+      if (dx < -200) {
+        return true;
+      }
+      return false;
+      }
+
+    const recognizeComment = ({ dx }) => {
+      if( dx > 200 ) {
+        return true;
+      }
+      return false;
+    }
+
+    const panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: (e, gestureState) => {
+        return true;
+      },
+      onPanResponderGrant: () => {
+        this.view.rubberBand(1000)
+        .then(endState => console.log(endState.finished ? 'finished' : 'cancelled'));
+      },
+
+      onPanResponderEnd: (e, gestureState ) => {
+        console.log("pan responder end ", gestureState);
+        if (recognizeDrag(gestureState))
+            { 
+              Alert.alert(
+               'Add Favorite',
+               'Are you sure you wish to add ' + dish.name + ' to favorite ?',
+               [
+                 {
+                  text: 'Cancel', 
+                  onPress: () => console.log('Cancel Pressed'), 
+                  style: 'cancel'
+                 },
+                 {
+                  text: 'OK', 
+                  onPress: () => {props.favorite ? console.log('Already favorite') : props.onPress()}
+                 },
+               ],
+               {cancelable: false}
+             );
+            
+            }
+            else if(recognizeComment(gestureState)) {
+              openCommentForm();
+            }
+             return true;
+      }
+    });
+
+        const shareDish = (title, message, url) => {
+          Share.share({
+            title,
+            message: `${title}: ${message} ${url}`,
+            url,
+        }, {
+              dialogTitle: `Share ${title}`,
+        });
+      };
+
         if (dish != null) {
             return(
-          <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+          <Animatable.View animation="fadeInDown" duration={2000} delay={1000}
+            ref={this.handleViewRef} 
+            {...panResponder.panHandlers}>
+
             <Card 
                 featuredTitle={dish.name}                
-                image={{uri : baseUrl + dish.image}}>                    
+                image={{uri : baseUrl + dish.image}}>
+
                 <Text style={{margin: 10, fontSize:20}}> 
                     {dish.category} ({dish.name} )
                 </Text>
+
                 <Text style={{margin: 10}}>                       
                     {dish.description}                    
                 </Text> 
+
              <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                
                 <Icon                    
                     raised                    
                     reverse                    
@@ -71,6 +143,7 @@ function RenderDish(props) {
                     color='#f50'                    
                     onPress={() => props.favorite ? console.log('Already favorite') : props.onPress()}
                 /> 
+
                 <Icon                    
                     raised                    
                     reverse                    
@@ -78,9 +151,20 @@ function RenderDish(props) {
                     type='font-awesome'                    
                     color='#512DA8'                    
                     onPress={() => openCommentForm()}
+                />
+
+                <Icon                    
+                    raised                    
+                    reverse                    
+                    name= 'share'                    
+                    type='font-awesome'                    
+                    color='#512DA8'                    
+                    onPress= {() => shareDish(dish.name, dish.description, baseUrl + dish.image)}
                 /> 
-             </View>                         
+             </View> 
+
             </Card> 
+
             </Animatable.View>           
             );        
         }
