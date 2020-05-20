@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@react-native-community/datetimepicker": "github:react-native-community/datetimepicker",
+    "@react-navigation/drawer": "^5.7.7",
     "@react-navigation/native": "^5.3.0",
     "@react-navigation/stack": "^5.3.5",
     "@unimodules/react-native-adapter": "^5.2.0",

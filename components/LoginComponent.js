@@ -1,5 +1,5 @@
 import React, { Component } from 'react'; 
-import { View, StyleSheet } from 'react-native'; 
+import { View, StyleSheet, ScrollView } from 'react-native'; 
 import { Button, Image, Icon, Input, CheckBox } from 'react-native-elements'; 
 // import { SecureStore } from 'expo';
 // import * as  from 'expo-secure-store';
@@ -210,7 +210,9 @@ class RegisterTab extends Component {
     }    
     }
 
-    render() {        
+    render() {
+        
+        
         return(            
         <ScrollView>            
             <View style={styles.container}>                
